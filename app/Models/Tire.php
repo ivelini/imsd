@@ -2,18 +2,35 @@
 
 namespace App\Models;
 
-
-use App\Casts\Tire\ParametersCast;
 use App\DataTransfers\Tire\ParametersDto;
-use App\Models\Traits\ScopesTrait;
+use App\Models\Interfaces\FilterAndSortInterface;
+use App\Models\Traits\FilterTrait;
+use App\Models\Traits\SortTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Ramsey\Collection\Collection;
 
-class Tire extends Model
+/**
+ * Шины
+ *
+ * @property int $id
+ * @property int $vendor_id
+ * @property int $season_id
+ * @property int $country_id
+ * @property string $product_article
+ * @property string $name
+ * @property int $width
+ * @property int $height
+ * @property string $diameter
+ * @property boolean $is_runflat
+ * @property boolean $is_spike
+ * @property string $description
+ * @property ParametersDto $parameters
+ */
+class Tire extends Model implements FilterAndSortInterface
 {
-    use HasFactory, ScopesTrait;
+    use HasFactory, FilterTrait, SortTrait;
 
     protected $fillable = [
         'vendor_id',
@@ -54,6 +71,32 @@ class Tire extends Model
         return $this->belongsToMany(Stock::class, 'tire_stock', 'tire_id', 'stock_id')
             ->as('inside')
             ->withPivot(['count', 'price', 'minimum_market_price']);
+    }
+
+
+    /**
+     * Присоединяем таблице "tire_stock", группируем по "tires.id" и берем минимальное значение "tire_stock.price"
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeJoinPrice(Builder $query): Builder
+    {
+        return $query->selectRaw('min(tire_stock.price) as price, tires.*')
+            ->join('tire_stock', 'tires.id', '=', 'tire_stock.tire_id')
+            ->groupBy('tires.id');
+    }
+
+    /**
+     * Реализация фильтрации сезона. Если сезона нет, то вернуть $query без изменений.
+     * @param Builder $query
+     * @param array $values
+     * @return Builder
+     */
+    public function filterSeason(Builder $query, array $values): Builder
+    {
+        return $query->whereHas('season', function (Builder $query) use ($values) {
+            $query->whereIn('id', $values);
+        });
     }
 
     public function country()

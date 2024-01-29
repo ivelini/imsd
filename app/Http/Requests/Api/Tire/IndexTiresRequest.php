@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api\Tire;
 
 use App\Rules\Tire\FilterRule;
+use App\Rules\Tire\SortRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class IndexTiresRequest extends FormRequest
@@ -23,7 +24,8 @@ class IndexTiresRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'filters' => ['nullable', 'string', new FilterRule]
+            'filters' => ['nullable', 'string', new FilterRule],
+            'sorts' => ['nullable', 'string', new SortRule],
         ];
     }
 }

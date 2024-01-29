@@ -17,17 +17,12 @@ class TireController extends Controller
     {
         return TireIndexResource::collection(Tire::query()
             ->with('country', 'season', 'vendor')
+            ->joinPrice()
             ->filter($request->filters)
+            ->sort($request->sorts)
+//            ->dd()
             ->paginate(100)
         );
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
@@ -38,19 +33,4 @@ class TireController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //a
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

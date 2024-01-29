@@ -31,7 +31,7 @@ class TireIndexResource extends JsonResource
             'country'  => CountryResource::make($this->whenLoaded('country')),
             'season_id'  => $this->season_id,
             'season'  => SeasonResource::make($this->whenLoaded('season')),
-            'name'  => $this->name,
+            'name'  => 'Шина ' . $this->name . ' ' . $this->width . '/' . $this->height . ' R' . $this->diameter,
             'width'  => $this->width,
             'height'  => $this->height,
             'diameter'  => $this->diameter,
