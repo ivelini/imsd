@@ -15,6 +15,8 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('profile', [ProfileController::class, 'show'])->name('profile');
 
     Route::group(['prefix' => 'import/'], function () {
-        Route::post('tires', ImportTiresController::class)->name('import.tires');
+        Route::post('tires', ImportTiresController::class)
+            ->middleware('only-one-running-job:import-tires')
+            ->name('import.tires');
     });
 });

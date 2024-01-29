@@ -35,11 +35,11 @@ class ParametersCast implements CastsAttributes
     {
         if (! $value instanceof ParametersDto) {
             $value = new ParametersDto(
-                $value['start_of_sales'],
-                $value['fuel_rate'],
-                $value['noise'],
-                $value['type_car'],
-                $value['control']
+                trim($value['start_of_sales']),
+                trim($value['fuel_rate']),
+                trim($value['noise']),
+                trim($value['type_car']),
+                trim($value['control'])
             );
         }
 

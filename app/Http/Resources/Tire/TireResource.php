@@ -5,6 +5,7 @@ namespace App\Http\Resources\Tire;
 use App\Http\Resources\Library\CountryResource;
 use App\Http\Resources\Library\SeasonResource;
 use App\Http\Resources\Library\VendorResource;
+use App\Http\Resources\Stock\StockResource;
 use App\Models\Season;
 use App\Models\Tire;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @mixin Tire
  */
-class TireIndexResource extends JsonResource
+class TireResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -38,8 +39,10 @@ class TireIndexResource extends JsonResource
             'is_runflat'  => $this->is_runflat,
             'is_spike'  => $this->is_spike,
             'parameters'  => $this->parameters,
-            'count' => $this->total_count,
-            'price' => $this->minimum_price_from_stocks
+            'count' => $this->total_count_all_stocks,
+            'price' => $this->minimum_price_from_stocks,
+            'stocks' => StockResource::collection($this->whenLoaded('stocks')),
+            'description' => $this->description,
         ];
     }
 }

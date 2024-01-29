@@ -43,6 +43,7 @@ trait FilterTrait
                     });
                     continue;
                 }
+
                 if ($column == 'season') {
                     $query = $this->filterSeason($query, $values);
                 }

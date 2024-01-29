@@ -2,8 +2,7 @@
 
 namespace App\Http;
 
-
-use App\Http\Middleware\Import\ImportTiresMiddleware;
+use App\Http\Middleware\OnlyOneRunningJob;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -66,6 +65,6 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'check-other-table-after-import-tires' => ImportTiresMiddleware::class,
+        'only-one-running-job' => OnlyOneRunningJob::class,
     ];
 }

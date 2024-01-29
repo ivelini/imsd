@@ -27,6 +27,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property boolean $is_spike
  * @property string $description
  * @property ParametersDto $parameters
+ * @property int $minimum_price_from_stocks     Минимальная цена на складе
+ * @property int $total_count_all_stocks        Сумма на всех складах
  */
 class Tire extends Model implements FilterAndSortInterface
 {
@@ -55,11 +57,20 @@ class Tire extends Model implements FilterAndSortInterface
 
     /**
      * Минимальная цена по складам
-     * @return void
+     * @return int
      */
-    public function getMinimumPriceFromStocksAttribute()
+    public function getMinimumPriceFromStocksAttribute(): int
     {
         return $this->stocks->min('inside.price');
+    }
+
+    /**
+     * Количество на всех складах
+     * @return int
+     */
+    public function getTotalCountAllStocksAttribute(): int
+    {
+        return $this->stocks->sum('inside.count');
     }
 
     /**
@@ -81,7 +92,7 @@ class Tire extends Model implements FilterAndSortInterface
      */
     public function scopeJoinPrice(Builder $query): Builder
     {
-        return $query->selectRaw('min(tire_stock.price) as price, tires.*')
+        return $query->selectRaw('min(tire_stock.price) as price, sum(tire_stock.count) as total_count, tires.*')
             ->join('tire_stock', 'tires.id', '=', 'tire_stock.tire_id')
             ->groupBy('tires.id');
     }

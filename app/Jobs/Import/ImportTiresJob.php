@@ -17,6 +17,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Rap2hpoutre\FastExcel\FastExcel;
@@ -34,13 +35,21 @@ class ImportTiresJob implements ShouldQueue
         public int $offset = 1, //С какой строки начать парсинг
         public int $limit = 1000, //Количество строк в задании
     )
-    {}
+    {
+        $this->onQueue('import-tires');
+    }
 
     /**
      * Execute the job.
      */
     public function handle(): void
     {
+        //Очищаем базу при первом задании
+        if ($this->offset == 1) {
+            DB::table('tires')->delete();
+            DB::table('tire_stock')->delete();
+        }
+
         //Текущий номер строки из файла
         $currentRowNumber = 1;
         //Количество итераций вставки

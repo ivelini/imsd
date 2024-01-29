@@ -5,14 +5,12 @@ namespace App\Http\Controllers\Api\Public;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Tire\IndexTiresRequest;
 use App\Http\Resources\Tire\TireIndexResource;
+use App\Http\Resources\Tire\TireResource;
 use App\Models\Tire;
 use Illuminate\Http\Request;
 
 class TireController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(IndexTiresRequest $request)
     {
         return TireIndexResource::collection(Tire::query()
@@ -25,12 +23,8 @@ class TireController extends Controller
         );
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Tire $tire)
     {
-        //
+        return TireResource::make($tire->load('vendor', 'country', 'season', 'stocks'));
     }
-
 }

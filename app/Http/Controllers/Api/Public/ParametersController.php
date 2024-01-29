@@ -4,17 +4,18 @@ namespace App\Http\Controllers\Api\Public;
 
 use App\Helpers\Response;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\Tire\IndexTiresRequest;
 use App\Http\Resources\Library\CountryResource;
 use App\Http\Resources\Library\SeasonResource;
 use App\Http\Resources\Library\VendorResource;
-use App\Http\Resources\Tire\TireIndexResource;
 use App\Models\Country;
 use App\Models\Season;
 use App\Models\Tire;
 use App\Models\Vendor;
-use Illuminate\Http\Request;
 
+
+/**
+ * Вывод информации для фильтра
+ */
 class ParametersController extends Controller
 {
     /**
