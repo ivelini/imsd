@@ -46,8 +46,8 @@ class ImportTiresJob implements ShouldQueue
     {
         //Очищаем базу при первом задании
         if ($this->offset == 1) {
-            DB::table('tires')->delete();
-            DB::table('tire_stock')->delete();
+            DB::table('tires')->truncate();
+            DB::table('tire_stock')->truncate();
         }
 
         //Текущий номер строки из файла

@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api\Admin\Import;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FileRequest extends FormRequest
+class FileExcelRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

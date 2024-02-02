@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Admin\Auth\RevokeController;
 use App\Http\Controllers\Api\Admin\Auth\TokenController;
 use App\Http\Controllers\Api\Admin\Import\ImportTiresController;
+use App\Http\Controllers\Api\Admin\Import\ImportVehicleController;
 use App\Http\Controllers\Api\Admin\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,5 +19,9 @@ Route::group(['middleware' => 'auth:admin'], function () {
         Route::post('tires', ImportTiresController::class)
             ->middleware('only-one-running-job:import-tires')
             ->name('import.tires');
+
+        Route::post('vehicle', ImportVehicleController::class)
+            ->middleware('only-one-running-job:import-vehicle')
+            ->name('import.vehicle');
     });
 });

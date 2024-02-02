@@ -4,14 +4,14 @@ namespace App\Http\Controllers\Api\Admin\Import;
 
 use App\Helpers\Response;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\Admin\Import\FileRequest;
+use App\Http\Requests\Api\Admin\Import\FileExcelRequest;
 use App\Jobs\Import\ImportTiresJob;
 use Illuminate\Support\Facades\Storage;
 
 
 class ImportTiresController extends Controller
 {
-    public function __invoke(FileRequest $request)
+    public function __invoke(FileExcelRequest $request)
     {
         $path = $request->validated()['file']->store('/temp', 'local');
 

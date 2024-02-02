@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Public;
+namespace App\Http\Controllers\Api\Public\Filters;
 
 use App\Helpers\Response;
 use App\Http\Controllers\Controller;
@@ -16,12 +16,12 @@ use App\Models\Vendor;
 /**
  * Вывод информации для фильтра
  */
-class ParametersController extends Controller
+class TireFilterController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function tire()
+    public function __invoke()
     {
         return Response::success([
             'data' => [
