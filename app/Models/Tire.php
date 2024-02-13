@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\DataTransfers\Tire\ParametersDto;
 use App\Models\Interfaces\FilterAndSortInterface;
+use App\Models\Tcs\TcsTireSpecification;
 use App\Models\Traits\FilterTrait;
 use App\Models\Traits\SortTrait;
 use Illuminate\Database\Eloquent\Builder;
@@ -29,6 +30,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property ParametersDto $parameters
  * @property int $minimum_price_from_stocks     Минимальная цена на складе
  * @property int $total_count_all_stocks        Сумма на всех складах
+ *
+ * @property Builder $sort
+ * @property Builder $filter
+ * @property Builder $joinPrice
+ * @property Builder $filterSeason
+ * @property Builder $filterTcsTireSpecification
  */
 class Tire extends Model implements FilterAndSortInterface
 {
@@ -108,6 +115,20 @@ class Tire extends Model implements FilterAndSortInterface
         return $query->whereHas('season', function (Builder $query) use ($values) {
             $query->whereIn('id', $values);
         });
+    }
+
+    public function scopeFilterTcsTireSpecification(Builder $query, TcsTireSpecification $tireSpecification)
+    {
+        return $query
+            ->where('width', $tireSpecification->front_width)
+            ->where('height', $tireSpecification->front_height)
+            ->where('diameter', 'like', $tireSpecification->front_diameter)
+            ->when($tireSpecification->back_width, fn($query, $back_width) => $query
+                ->orWhereRaw(
+                    '(tires.width = ? and tires.height = ? and tires.diameter like ?)',
+                    [$tireSpecification->back_width, $tireSpecification->back_height, $tireSpecification->back_diameter]
+                )
+            );
     }
 
     public function country()

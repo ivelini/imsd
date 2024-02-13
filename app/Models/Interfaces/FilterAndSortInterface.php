@@ -5,12 +5,12 @@ namespace App\Models\Interfaces;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- *Методы, необходимые для фильтрации
+ * Методы, необходимые для фильтрации
  */
 interface FilterAndSortInterface
 {
     /**
-     * Билдер присоединения таблицы со прайсовыми значениями
+     * Билдер присоединения таблицы с прайсовыми значениями
      * @param Builder $query
      * @return Builder
      */

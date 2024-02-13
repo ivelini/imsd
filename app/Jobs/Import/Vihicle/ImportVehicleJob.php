@@ -13,6 +13,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -46,6 +47,8 @@ class ImportVehicleJob implements ShouldQueue
             DB::table('tcs_tyre_specifications')->truncate();
             DB::table('tcs_wheel_specifications')->truncate();
             DB::table('tcs_car_models')->truncate();
+
+            Cache::clear();
         }
 
         foreach($this->rowsGenerator($this->path) as $key => $row) {
@@ -61,7 +64,7 @@ class ImportVehicleJob implements ShouldQueue
                 if (isset($data[4]) && $data[4] >= 2000) {
                     $this->import(new ImportVehicleDto(
                         $data[0],
-                        $data[1],
+                        $data[2],
                         $data[3],
                         $data[4],
                         $data[5],

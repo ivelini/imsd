@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property ?int $back_width
  * @property ?int $back_height
  * @property ?int $back_diameter
+ * @property-read string $name
  *
  */
 class TcsTireSpecification extends Model
@@ -37,4 +38,11 @@ class TcsTireSpecification extends Model
     protected $casts = [
         'type' => TcsTypeEnum::class,
     ];
+
+    public function getNameAttribute()
+    {
+        $name = $this->front_width . '/' . $this->front_height . ' R' . $this->front_diameter;
+
+        return empty($this->back_width) ? $name : $name . ' - ' . $this->back_width . '/' . $this->back_height . ' R' . $this->back_diameter;
+    }
 }

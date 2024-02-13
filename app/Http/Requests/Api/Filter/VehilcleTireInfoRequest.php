@@ -8,7 +8,7 @@ use App\Rules\Tire\SortRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 
-class VehilcleTireRequest extends FormRequest
+class VehilcleTireInfoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -63,7 +63,7 @@ class VehilcleTireRequest extends FormRequest
     public function passedValidation()
     {
         $this->merge([
-            'cache_key' => 'tcs_' . Str::slug(implode(' ', $this->validated())),
+            'cache_key' => 'tcs_tire_info_' . Str::slug(implode(' ', $this->validated())),
         ]);
     }
 }

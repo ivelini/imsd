@@ -18,15 +18,26 @@ class TireSpecificationResource extends JsonResource
      */
     public function toArray($request)
     {
+        $name = $this->front_width . '/' . $this->front_height . ' /R' . $this->front_diameter;
+
+        if(!empty($this->back_width)) {
+            $name .= ' - ' . $this->back_width . '/' . $this->back_height . ' /R' . $this->back_diameter;
+        }
+
         return [
             'id' => $this->id,
+            'name' => $name,
             'type' => $this->type->name,
-            'front_width' => $this->front_width,
-            'front_height' => $this->front_height,
-            'front_diameter' => $this->front_diameter,
-            'back_width' => $this->back_width,
-            'back_height' => $this->back_height,
-            'back_diameter' => $this->back_diameter,
+            'front' => [
+                'width' => $this->front_width,
+                'height' => $this->front_height,
+                'diameter' => $this->front_diameter,
+            ],
+            'back' => ! empty($this->back_width) ? [
+                'width' => $this->back_width,
+                'height' => $this->back_height,
+                'diameter' => $this->back_diameter,
+            ] : null,
         ];
     }
 }

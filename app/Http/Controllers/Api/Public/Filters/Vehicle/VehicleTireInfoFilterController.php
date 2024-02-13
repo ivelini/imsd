@@ -1,24 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\Api\Public\Filters;
+namespace App\Http\Controllers\Api\Public\Filters\Vehicle;
 
 use App\Helpers\Response;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\Filter\VehilcleTireRequest;
+use App\Http\Requests\Api\Filter\VehilcleTireInfoRequest;
 use App\Models\Tcs\TcsCarModel;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
 
 /**
  * Вывод информации для фильтра шин по авто
  */
-class VehicleTireFilterController extends Controller
+class VehicleTireInfoFilterController extends Controller
 {
-    public function __invoke(VehilcleTireRequest $request)
+    public function __invoke(VehilcleTireInfoRequest $request)
     {
         $parameters = $request->validated();
         $cache_key = $request->cache_key;
-
+        
         $data = Cache::remember($cache_key, now()->addDay(), function () use ($parameters) {
             return [
                 'vendor' => TcsCarModel::select('vendor')->distinct('vendor')->get()->transform(fn($item) => [
