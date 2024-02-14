@@ -32,17 +32,17 @@ class TireResource extends JsonResource
             'country'  => CountryResource::make($this->whenLoaded('country')),
             'season_id'  => $this->season_id,
             'season'  => SeasonResource::make($this->whenLoaded('season')),
+            'stocks' => StockResource::collection($this->whenLoaded('stocks')),
             'name'  => 'Шина ' . $this->name . ' ' . $this->width . '/' . $this->height . ' R' . $this->diameter,
             'width'  => $this->width,
             'height'  => $this->height,
             'diameter'  => $this->diameter,
             'is_runflat'  => $this->is_runflat,
             'is_spike'  => $this->is_spike,
-            'parameters'  => $this->parameters,
+            'parameters'  => $this->when(isset($this->parameters), $this->parameters),
             'count' => $this->total_count_all_stocks,
             'price' => $this->minimum_price_from_stocks,
-            'stocks' => StockResource::collection($this->whenLoaded('stocks')),
-            'description' => $this->description,
+            'description' => $this->when(isset($this->description), $this->description),
         ];
     }
 }

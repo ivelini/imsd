@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Api\Public;
 
+use App\Helpers\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Tire\IndexTiresRequest;
 use App\Http\Requests\Api\Tire\IndexToVehicleIdRequest;
 use App\Http\Resources\Tire\TireIndexResource;
 use App\Http\Resources\Tire\TireResource;
 use App\Models\Tcs\TcsTireSpecification;
-use App\Models\Tcs\TcsTypeEnum;
 use App\Models\Tire;
+use App\Services\Grouper\GrouperService;
 use Illuminate\Http\Request;
 
 class TireController extends Controller
@@ -40,20 +41,13 @@ class TireController extends Controller
                         /** @var TcsTireSpecification $specification */
                         fn ($specification) => [
                             'specification' => $specification->name,
-                            'tires' => TireIndexResource::collection(
-                                Tire::query()
-                                    ->with('country', 'season', 'vendor')
-                                    ->joinPrice()
-                                    ->filterTcsTireSpecification($specification)
-                                    ->filter($request->filters)
-                                    ->sort($request->sort)
-                                    ->get()
-                            )
+                            'is_grouping' => isset($specification->back_width),
+                            'tires' => (new GrouperService($specification, $request->filters, $request->sort))->run()
                         ]
                     )
             );
 
-        return $tires;
+        return Response::success(['data' => $tires]);
     }
 
     public function show(Tire $tire)

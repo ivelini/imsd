@@ -17,13 +17,13 @@ class ParametersCast implements CastsAttributes
     {
         $data = json_decode($value, true);
 
-        return new ParametersDto(
+        return isset($data) ? new ParametersDto(
             $data['start_of_sales'],
             $data['fuel_rate'],
             $data['noise'],
             $data['type_car'],
             $data['control'],
-        );
+        ) : null;
     }
 
     /**

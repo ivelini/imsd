@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\HigherOrderWhenProxy;
 
 /**
  * Шины
@@ -97,9 +98,14 @@ class Tire extends Model implements FilterAndSortInterface
      * @param Builder $query
      * @return Builder
      */
-    public function scopeJoinPrice(Builder $query): Builder
+    public function scopeJoinPrice(Builder $query, bool $includeTiresAll = true): Builder
     {
-        return $query->selectRaw('min(tire_stock.price) as price, sum(tire_stock.count) as total_count, tires.*')
+        $slectRaw = $includeTiresAll ?
+            'min(tire_stock.price) as price, sum(tire_stock.count) as total_count, tires.*' :
+            'min(tire_stock.price) as price, sum(tire_stock.count) as total_count';
+
+        return $query
+            ->selectRaw($slectRaw)
             ->join('tire_stock', 'tires.id', '=', 'tire_stock.tire_id')
             ->groupBy('tires.id');
     }
@@ -117,6 +123,13 @@ class Tire extends Model implements FilterAndSortInterface
         });
     }
 
+    /**
+     * Запрос шин по спецификации
+     *
+     * @param Builder $query
+     * @param TcsTireSpecification $tireSpecification
+     * @return Builder|HigherOrderWhenProxy
+     */
     public function scopeFilterTcsTireSpecification(Builder $query, TcsTireSpecification $tireSpecification)
     {
         return $query
