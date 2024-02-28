@@ -32,11 +32,13 @@ class TireController extends Controller
      */
     public function indexToVehicleParameters(IndexToVehicleIdRequest $request)
     {
-        $tireSpecifications = TcsTireSpecification::whereIn('id', $request->vehicle_ids)->get()->groupBy(fn($item) => $item->type->name);
+        $inputSpecifications = TcsTireSpecification::whereIn('id', $request->vehicle_ids)->get();
+        $sortedSpecifications = collect($request->vehicle_ids)->map(fn($specificationId) => $inputSpecifications->where('id', $specificationId)->first());
+        $grouppedSpecifications = $sortedSpecifications->groupBy(fn($item) => $item->type->name);
 
-        $tires = $tireSpecifications
+        $grouppedTires = $grouppedSpecifications
             ->map(
-                fn ($specifications) => $specifications
+                fn ($groupSpecifications) => $groupSpecifications
                     ->map(
                         /** @var TcsTireSpecification $specification */
                         fn ($specification) => [
@@ -47,7 +49,8 @@ class TireController extends Controller
                     )
             );
 
-        return Response::success(['data' => $tires]);
+
+        return Response::success(['data' => $grouppedTires]);
     }
 
     public function show(Tire $tire)
