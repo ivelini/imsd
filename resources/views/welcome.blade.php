@@ -4,9 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Главная</title>
+    @viteReactRefresh
     @vite(['resources/css/style.css'])
-    <!-- Подключение jQuery -->
 
+    <!-- Подключение jQuery -->
     <!-- Подключение Slick Slider -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
@@ -14,6 +15,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 </head>
 <body>
+<div id="app-react"></div>
 <div class="app">
     <div class="wrapper">
         <div class="catalog-hidden-menu catalog-page-hide" id="catalog-menu">
@@ -1280,6 +1282,7 @@
         </footer>
     </div>
 </div>
+@vite(['resources/js/app.jsx'])
 
 <script>
     $(document).ready(function () {

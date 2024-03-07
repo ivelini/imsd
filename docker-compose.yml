@@ -1,0 +1,95 @@
+version: "3"
+
+networks:
+    imsd-network:
+        driver: bridge
+
+services:
+    nginx:
+        image: nginx:stable-alpine
+        container_name: ${DOCKER_APP_NAME:-project}-nginx
+        restart: unless-stopped
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx/conf.d:/etc/nginx/conf.d
+            - ./storage/logs/nginx:/var/log/nginx/
+        ports:
+            - 8085:80
+        depends_on:
+            - app
+        environment:
+            TZ: ${DOCKER_WORKSPACE_TIMEZONE:-UTC}
+        networks:
+            - imsd-network
+
+    app:
+        image: app-imsd:php-8.2
+        container_name: ${DOCKER_APP_NAME:-project}-app
+        hostname: app-service
+        build:
+          args:
+            user: $USER
+            uid: 1000
+          context: ./docker/php
+          dockerfile: Dockerfile
+        restart: unless-stopped
+        environment:
+            PHP_IDE_CONFIG: "serverName=Docker"
+        extra_hosts:
+            - host.docker.internal:host-gateway
+        volumes:
+            - ./:/var/www
+        networks:
+            - imsd-network
+
+    postgres:
+        image: postgres:15-alpine
+        container_name: ${DOCKER_APP_NAME:-project}-postgres
+        restart: unless-stopped
+        volumes:
+            - ./docker-volumes/postgres/data:/var/lib/postgresql/data:cached
+        environment:
+            POSTGRES_DB: ${DB_DATABASE}
+            POSTGRES_USER: ${DB_USERNAME}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+        ports:
+            - "54321:5432"
+        networks:
+            - imsd-network
+        healthcheck:
+            test: [ "CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}" ]
+
+    redis:
+        image: redis:latest
+        container_name: ${DOCKER_APP_NAME:-project}-redis
+        restart: unless-stopped
+        ports:
+            - "6379:6379"
+        volumes:
+            - ./docker-volumes/redis:/root/redis
+            - ./docker/redis:/usr/local/etc/redis
+        environment:
+            - REDIS_DATABASES=${REDIS_DATABASES}
+            - REDIS_PASSWORD=${REDIS_PASSWORD}
+            - REDIS_PORT=6379
+        networks:
+            - imsd-network
+
+    node:
+        image: node-imsd
+        container_name: ${DOCKER_APP_NAME:-project}-node
+        restart: unless-stopped
+        build:
+            context: ./docker/node
+            dockerfile: Dockerfile
+        tty: true
+        working_dir: /var/www
+        volumes:
+            -   ./:/var/www
+        ports:
+            -   5173:5173
+            -   4173:4173
+        depends_on:
+            - app
+        networks:
+            - imsd-network
