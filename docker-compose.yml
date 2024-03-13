@@ -88,7 +88,6 @@ services:
             -   ./:/var/www
         ports:
             -   5173:5173
-            -   4173:4173
         depends_on:
             - app
         networks:

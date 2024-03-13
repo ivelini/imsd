@@ -13,7 +13,6 @@ RUN npm install -g npm@10.5.0
 USER node
 
 EXPOSE 5173
-EXPOSE 4173
 
 # https://github.com/vitejs/vite/discussions/3396
-CMD ["sh", "-c", "npm install && npm run dev --host"]
+CMD ["sh", "-c", "npm install && npm run dev -- --host"]

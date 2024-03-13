@@ -28,11 +28,11 @@ class TireFilterController extends Controller
                 'vendor' => VendorResource::collection(Vendor::all()),
                 'country' => CountryResource::collection(Country::all()),
                 'season' => SeasonResource::collection(Season::all()),
-                'is_runflat' => [true, false],
-                'is_spike' => [true, false],
-                'width' => Tire::query()->select('width')->orderBy('width')->distinct()->pluck('width'),
-                'height' => Tire::query()->select('height')->orderBy('height')->distinct()->pluck('height'),
-                'diameter' => Tire::query()->select('diameter')->orderBy('diameter')->distinct()->pluck('diameter')
+                'is_runflat' => [['id' =>true, 'name' => 'Да'], ['id' =>false, 'name' => 'Нет']],
+                'is_spike' => [['id' =>true, 'name' => 'С шипами'], ['id' =>false, 'name' => 'Без шипов']],
+                'width' => Tire::query()->select('width')->orderBy('width')->distinct()->pluck('width')->transform(fn($value) => ['id' => $value, 'name' => $value]),
+                'height' => Tire::query()->select('height')->orderBy('height')->distinct()->pluck('height')->transform(fn($value) => ['id' => $value, 'name' => $value]),
+                'diameter' => Tire::query()->select('diameter')->orderBy('diameter')->distinct()->pluck('diameter')->transform(fn($value) => ['id' => $value, 'name' => $value])
             ]
         ]);
     }

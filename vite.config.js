@@ -12,7 +12,7 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/css/style.css',
-                'resources/js/app.jsx'
+                'resources/js/apps/podborShin.jsx'
             ],
             refresh: true,
         }),
