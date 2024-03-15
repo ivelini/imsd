@@ -1,20 +1,17 @@
 import {useEffect, useRef} from "react";
+import styles from "../../PodborShinMain.module.css"
 
-export default function ImputComponent({ name, type, values, onChange }) {
-
-    let selectRef = useRef(null)
-
-     useEffect(() => {
-         selectRef.current.addEventListener('change', (e) => onChange(type, e.target.value))
-     }, [])
-
+export default function SelectParam({ name, type, values, onChange}) {
     return (
         <>
             <div className="custom-select-wrapper custom-select-wrapper-cat">
-                <select className="custom-select custom-select-cat" id="catalog-widthSelect" ref={selectRef}>
+                <select className="custom-select custom-select-cat"
+                        id="catalog-widthSelect"
+                        onChange={(e) => onChange(type, e.target.value)}
+                >
                     <option value="0">{ name }</option>
                     {
-                        values.map((el, index) => <option value={el.id} key={index}>{ el.name }</option>)
+                        values.map((el, index) => <option value={el.id != 'undefined' ? el.id : el.name } key={index}>{ el.name }</option>)
                     }
                 </select>
                 <div className="select-arrow">
