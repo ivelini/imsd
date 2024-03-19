@@ -11,8 +11,7 @@ export default function SelectVehicle({ name, type, values, onChange, query}) {
     }, 10)
 
 
-    return (
-        <>
+    return (<>
             <div className="custom-select-wrapper custom-select-wrapper-cat">
                 <select className={`custom-select custom-select-cat ${values.length == 0 && styles.selectedDisabled}`}
                         ref={selectRef}
@@ -30,6 +29,5 @@ export default function SelectVehicle({ name, type, values, onChange, query}) {
                     </svg>
                 </div>
             </div>
-        </>
-    )
+    </>)
 }

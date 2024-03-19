@@ -72,41 +72,37 @@ export default function Vehicle({upSetQueryString, setUpIsPushButton}) {
         }
     }
 
-    return (
-        <>
-            {Object.keys(params).length > 0 && (
-                <>
-                    <SelectVehicle key="vendor"
-                                    name="Марка"
-                                    type="vendor"
-                                    values={params.vendor}
-                                    onChange={handleChangeQuery}
-                                    query={query}
+    return (<>
+        {Object.keys(params).length > 0 && (<>
+            <SelectVehicle key="vendor"
+                           name="Марка"
+                           type="vendor"
+                           values={params.vendor}
+                           onChange={handleChangeQuery}
+                           query={query}
 
-                    />
-                    <SelectVehicle key={query.model != null ? query.model : 'model'}
-                                   name="Модель"
-                                   type="model"
-                                   values={params.model != null ? params.model : []}
-                                   onChange={handleChangeQuery}
-                                   query={query}
-                    />
-                    <SelectVehicle key={query.year != null ? query.year : 'year'}
-                                   name="Год выпуска"
-                                   type="year"
-                                   values={params.year != null ? params.year : []}
-                                   onChange={handleChangeQuery}
-                                   query={query}
-                    />
-                    <SelectVehicle key={query.modification != null ? query.modification : 'modification'}
-                                   name="Модификация"
-                                   type="modification"
-                                   values={params.modification != null ? params.modification : []}
-                                   onChange={handleChangeQuery}
-                                   query={query}
-                    />
-                </>
-            )}
-        </>
-    )
+            />
+            <SelectVehicle key={query.model != null ? query.model : 'model'}
+                           name="Модель"
+                           type="model"
+                           values={params.model != null ? params.model : []}
+                           onChange={handleChangeQuery}
+                           query={query}
+            />
+            <SelectVehicle key={query.year != null ? query.year : 'year'}
+                           name="Год выпуска"
+                           type="year"
+                           values={params.year != null ? params.year : []}
+                           onChange={handleChangeQuery}
+                           query={query}
+            />
+            <SelectVehicle key={query.modification != null ? query.modification : 'modification'}
+                           name="Модификация"
+                           type="modification"
+                           values={params.modification != null ? params.modification : []}
+                           onChange={handleChangeQuery}
+                           query={query}
+            />
+        </>)}
+    </>)
 }

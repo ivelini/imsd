@@ -1,12 +1,10 @@
 export default function HorisontalItem({item}) {
 
-    return (
-        <>
+    return (<>
             <div className="catalog-product">
                 <div className="catalog-product-image">
                     <div className="catalog-product-image-panel">
-                        {
-                            (item.season.name == 'летняя' || item.season.name == 'всесезонная') && (
+                        {(item.season.name == 'летняя' || item.season.name == 'всесезонная') && (
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25"
                                      fill="none">
                                     <path
@@ -14,10 +12,8 @@ export default function HorisontalItem({item}) {
                                         fill="#FFC10A"
                                     />
                                 </svg>
-                            )
-                        }
-                        {
-                            (item.season.name == 'зимняя' || item.season.name == 'всесезонная') && (
+                            )}
+                        {(item.season.name == 'зимняя' || item.season.name == 'всесезонная') && (
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25"
                                      fill="none">
                                     <path
@@ -25,8 +21,7 @@ export default function HorisontalItem({item}) {
                                         fill="#3059A8"
                                     />
                                 </svg>
-                            )
-                        }
+                        )}
                     </div>
                     <img src="./assets/img/wheel-product.png" alt=""/>
                     <div className="star-rating-mob">
@@ -128,6 +123,5 @@ export default function HorisontalItem({item}) {
                     </div>
                 </div>
             </div>
-        </>
-    )
+    </>)
 }
