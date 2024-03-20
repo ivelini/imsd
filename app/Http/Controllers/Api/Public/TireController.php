@@ -42,6 +42,7 @@ class TireController extends Controller
                     ->map(
                         /** @var TcsTireSpecification $specification */
                         fn ($specification) => [
+                            'specification_id' => $specification->id,
                             'specification' => $specification->name,
                             'is_grouping' => isset($specification->back_width),
                             'tires' => (new GrouperService($specification, $request->filters, $request->sort))->run()

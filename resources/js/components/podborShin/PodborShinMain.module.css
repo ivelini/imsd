@@ -9,3 +9,8 @@
 .selectedDisabled {
 
 }
+
+.groupedItems {
+    border-bottom: 15px solid #ededed;
+    padding-bottom: 15px;
+}

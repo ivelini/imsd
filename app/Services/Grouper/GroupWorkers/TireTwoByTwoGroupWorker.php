@@ -18,7 +18,7 @@ class  TireTwoByTwoGroupWorker extends GroupWorker
             ->groupBy('name')
             ->filter(fn($group) => $group->count() == 2)
             ->map(
-                fn($group) => $group->sortBy('width')->map(
+                fn($group) => $group->sortBy('width')->values()->map(
                     fn($tire) => TireResource::make($tire)
                 )
             )

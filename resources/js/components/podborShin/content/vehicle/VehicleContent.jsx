@@ -24,8 +24,6 @@ export default function VehicleContent({data}) {
                 let res = await fetch(url, {headers: {'Accept': 'application/json'}})
                 let resData = await res.json()
                 setCollection(resData.data)
-                console.log("setItemsCollection",resData.data)
-
             } catch (error) {
                 console.log(error.message)
             }
@@ -63,15 +61,25 @@ export default function VehicleContent({data}) {
             {typeof collection[type] != 'undefined' &&
                 (<>
                     <div>{title}</div>
-                    {collection[type].map(function (itemGroup) {
+                    {collection[type].map(function (itemsGroup) {
                         return (<>
-                            {itemGroup.is_grouping == true ?
-                                (<GroupItems/>) :
-                                (<InlineItems/>)}
+                            {itemsGroup.is_grouping == true ?
+                                (<GroupItems key={itemsGroup.specification_id} groupingItemsGroup={itemsGroup} />) :
+                                (<InlineItems key={itemsGroup.specification_id} itemsGroup={itemsGroup} />)}
                         </>)
                     })}
                 </>)}
         </>)
+    }
+
+    function returnItemsNotZeroCount(arrayItems, collback) {
+        if(arrayItems.length > 0) {
+            return collback
+        } else {
+            return (<>
+                Нет позиций в выбранном параметре
+            </>)
+        }
     }
 
     return (<>
