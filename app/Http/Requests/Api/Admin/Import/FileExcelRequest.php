@@ -22,7 +22,7 @@ class FileExcelRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => ['required', 'file', 'extensions:xlsx']
+            'file' => ['required', 'file', 'mimes:xlsx']
         ];
     }
 }

@@ -7,6 +7,7 @@ env:
   SSH_PORT: 22
   SSH_USER: root
   SSH_KEY: ${{ secrets.MY_TIMEWEB }}
+  WORKDIR: /var/www/ilya/data/www/shop.ivelini.ru
 
 jobs:
   deploy:
@@ -27,8 +28,8 @@ jobs:
         username: ${{ env.SSH_USER }}
         key: ${{ env.SSH_KEY }}
         script: |
-          cd /var/www/ilya/data/www/
-          rm -rf /var/www/ilya/data/www/shop.ivelini.ru
+          cd /
+          rm -rf ${{ env.WORKDIR }}
 
     - name: Deploy to server
       uses: appleboy/scp-action@master
@@ -37,8 +38,8 @@ jobs:
         port: ${{ env.SSH_PORT }}
         username: ${{ env.SSH_USER }}
         key: ${{ env.SSH_KEY }}
-        source: ./*, !.gitignore, !.github, !.git, !.gitattributes, !./docker, !./docker-compose.yml, !./package-lock.json, !./composer.lock, ./node_modules
-        target: /var/www/ilya/data/www/shop.ivelini.ru
+        source: ./*, !.gitignore, !.github, !.git, !.gitattributes, !./docker, !./docker-compose.yml, !./node_modules !./vendor
+        target: ${{ env.WORKDIR }}
 
     - name: SSH run remote command
       uses: appleboy/ssh-action@master
@@ -48,12 +49,12 @@ jobs:
         username: ${{ env.SSH_USER }}
         key: ${{ env.SSH_KEY }}
         script: |
-          cp /var/www/ilya/data/www/build/.env.backend /var/www/ilya/data/www/shop.ivelini.ru/.env
-          cp /var/www/ilya/data/www/build/composer.phar /var/www/ilya/data/www/shop.ivelini.ru/composer.phar
-          cd /var/www/ilya/data/www/shop.ivelini.ru
+          cd ${{ env.WORKDIR }}
+          cp /var/www/ilya/data/www/build/.env.backend ./.env
+          cp /var/www/ilya/data/www/build/composer.phar ./composer.phar
           /opt/php82/bin/php ./composer.phar install
           /opt/php82/bin/php artisan storage:link
           /opt/php82/bin/php artisan migrate --force
-          /opt/php82/bin/php /var/www/ilya/data/www/shop.ivelini.ru/composer.phar dump-autoload
+          /opt/php82/bin/php ./composer.phar dump-autoload
           /opt/php82/bin/php artisan optimize
-          chown -R ilya:ilya ../shop.ivelini.ru
+          chown -R ilya:ilya ${{ env.WORKDIR }}

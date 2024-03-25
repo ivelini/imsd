@@ -22,7 +22,7 @@ class FileCsvRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => ['required', 'file', 'extensions:csv,txt']
+            'file' => ['required', 'file', 'mimes:csv,txt']
         ];
     }
 }
