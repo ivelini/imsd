@@ -37,7 +37,7 @@ jobs:
         port: ${{ env.SSH_PORT }}
         username: ${{ env.SSH_USER }}
         key: ${{ env.SSH_KEY }}
-        source: ./*, !.gitignore, !.github, !.git, !.gitattributes, !./docker, !./docker-compose.yml, !./package-lock.json, !./composer.lock
+        source: ./*, !.gitignore, !.github, !.git, !.gitattributes, !./docker, !./docker-compose.yml, !./package-lock.json, !./composer.lock, ./node_modules
         target: /var/www/ilya/data/www/shop.ivelini.ru
 
     - name: SSH run remote command
@@ -51,7 +51,7 @@ jobs:
           cp /var/www/ilya/data/www/build/.env.backend /var/www/ilya/data/www/shop.ivelini.ru/.env
           cp /var/www/ilya/data/www/build/composer.phar /var/www/ilya/data/www/shop.ivelini.ru/composer.phar
           cd /var/www/ilya/data/www/shop.ivelini.ru
-          /opt/php82/bin/php ./composer.phar install
+          /opt/php82/bin/php ./composer.phar update
           /opt/php82/bin/php artisan storage:link
           /opt/php82/bin/php artisan migrate --force
           /opt/php82/bin/php /var/www/ilya/data/www/shop.ivelini.ru/composer.phar dump-autoload
