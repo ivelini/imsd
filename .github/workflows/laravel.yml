@@ -3,10 +3,14 @@ name: Laravel
 on: workflow_dispatch
 
 jobs:
-  print_hellow:
-
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Первый шаг
-      run: echo "Hellow!"
+    - uses: actions/checkout@v4
+    
+    - name: Deploy to server
+      uses: appleboy/scp-action@master
+    - name: LS
+      run: ls -la
+        
+      
