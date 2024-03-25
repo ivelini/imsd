@@ -19,4 +19,4 @@ Route::get('/', function () {
 
 Route::get('/podbor_shin', function () {
     return view('pages.podbor_shin');
-});
+})->middleware('auth.basic');
