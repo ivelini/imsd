@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->middleware('auth.basic');
 
 Route::get('/podbor_shin', function () {
     return view('pages.podbor_shin');
