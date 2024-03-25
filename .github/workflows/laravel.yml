@@ -1,10 +1,12 @@
 name: Laravel
 
-on: workflow_dispatch
+on: push
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+
     steps:
     - uses: actions/checkout@v4
 
@@ -36,6 +38,4 @@ jobs:
           /opt/php82/bin/php artisan migrate --force
           /opt/php82/bin/php /var/www/ilya/data/www/shop.ivelini.ru/composer.phar dump-autoload
           /opt/php82/bin/php artisan optimize
-          npm install
-          npm run build
           chown -R ilya:ilya ../shop.ivelini.ru
