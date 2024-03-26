@@ -5,7 +5,7 @@ on: push
 env:
   SSH_HOST: 109.71.242.118
   SSH_PORT: 22
-  SSH_USER: root
+  SSH_USER: ilya
   SSH_KEY: ${{ secrets.TIMEWEB2 }}
   WORKDIR: /var/www/ilya/data/www/shop.ivelini.ru
 
@@ -48,11 +48,11 @@ jobs:
         script: |
           cd ${{ env.WORKDIR }}
           cp /var/www/ilya/data/www/build/.env.backend ./.env
-          /opt/php82/bin/php composer install
+          cp /var/www/ilya/data/www/build/composer.phar ./composer.phar
+          /opt/php82/bin/php ./composer.phar install
+          /opt/php82/bin/php ./composer.phar dump-autoload
           /opt/php82/bin/php artisan storage:link
           /opt/php82/bin/php artisan migrate --force
-          /opt/php82/bin/php composer dump-autoload
           /opt/php82/bin/php artisan optimize
           npm i
           npm run build
-          chown -R ilya:ilya ${{ env.WORKDIR }}
