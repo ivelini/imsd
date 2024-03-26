@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import Specifications from "./Specifications.jsx";
 import GroupItems from "./GroupItems.jsx";
 import InlineItems from "./InlineItems.jsx";
+import GroupSpecification from "./GroupSpecefication.jsx";
 
 export default function VehicleContent({data}) {
     // Массив ID спецификаций для подбора шин
@@ -57,29 +58,7 @@ export default function VehicleContent({data}) {
     console.log('render', data, 'specifications', specifications, 'selectedVehicleIds', selectedVehicleIds, 'collection', collection)
 
     function returnHtmlCollectionTypeSpecification(type, title) {
-        return (<>
-            {typeof collection[type] != 'undefined' &&
-                (<>
-                    <div>{title}</div>
-                    {collection[type].map(function (itemsGroup) {
-                        return (<>
-                            {itemsGroup.is_grouping == true ?
-                                (<GroupItems key={itemsGroup.specification_id} groupingItemsGroup={itemsGroup} />) :
-                                (<InlineItems key={itemsGroup.specification_id} itemsGroup={itemsGroup} />)}
-                        </>)
-                    })}
-                </>)}
-        </>)
-    }
 
-    function returnItemsNotZeroCount(arrayItems, collback) {
-        if(arrayItems.length > 0) {
-            return collback
-        } else {
-            return (<>
-                Нет позиций в выбранном параметре
-            </>)
-        }
     }
 
     return (<>
@@ -87,9 +66,9 @@ export default function VehicleContent({data}) {
 
             {selectedVehicleIds.length > 0 && (
                 <>
-                    {returnHtmlCollectionTypeSpecification('default', 'Рекомендация производителя')}
-                    {returnHtmlCollectionTypeSpecification('alternative', 'Лучшая альтернатива')}
-                    {returnHtmlCollectionTypeSpecification('tuning', 'Тюнинг')}
+                    <GroupSpecification key={collection.default?.map((itemGroup) => itemGroup.specification_id).join('.')} type="default" title="Рекомендация производителя" collection={collection} />
+                    <GroupSpecification key={collection.alternative?.map((itemGroup) => itemGroup.specification_id).join('.')} type="alternative" title="Лучшая альтернатива" collection={collection} />
+                    <GroupSpecification key={collection.tuning?.map((itemGroup) => itemGroup.specification_id).join('.')} type="tuning" title="Тюнинг" collection={collection} />
                 </>
 
             )}

@@ -11,7 +11,6 @@ export default function PodborShinMain() {
     }, [])
 
     async function getFilteredContent(queryString = '', typeFilter = 'param') {
-
         let url = typeFilter == 'param' ?
             import.meta.env.VITE_APP_URL + '/api/tire' + queryString :
             import.meta.env.VITE_APP_URL + '/api/list/filter/vehicle/tire/specifications' + queryString
@@ -21,7 +20,7 @@ export default function PodborShinMain() {
             let resData = await res.json()
 
             if(typeFilter == 'param') {
-                setDataContent({...dataContent, items: resData.data, totalItems: resData.meta.total, typeFilter})
+                setDataContent({...dataContent, items: resData.data, totalItems: resData.meta.total, typeFilter, links: resData.meta.links })
             } else {
                 setDataContent({params: resData.data, typeFilter})
             }
@@ -32,6 +31,7 @@ export default function PodborShinMain() {
 
     }
 
+    console.log('dataContent', dataContent)
     return (<>
         <h2>Шины <span className={styles.filterTitle}>{dataContent.filterTitle}</span> <span className={styles.totalCount}>Найдено {dataContent.totalItems} товаров</span></h2>
         <div className="main-content-catalog">
@@ -49,7 +49,7 @@ export default function PodborShinMain() {
                 <a href="#" className="catalog-panel-defaults">По умолчанию</a>
             </div>
             <SidebarFilter getFilteredContent={getFilteredContent}/>
-            <FilteredContent params={dataContent}/>
+            <FilteredContent params={dataContent} getFilteredContent={getFilteredContent}/>
         </div>
     </>)
 }

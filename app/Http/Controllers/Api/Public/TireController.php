@@ -22,7 +22,8 @@ class TireController extends Controller
             ->joinPrice()
             ->filter($request->filters)
             ->sort($request->sorts)
-            ->paginate(100)
+            ->paginate(50)
+            ->withQueryString()
         );
     }
 

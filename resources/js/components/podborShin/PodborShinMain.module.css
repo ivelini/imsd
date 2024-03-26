@@ -14,3 +14,16 @@
     border-bottom: 15px solid #ededed;
     padding-bottom: 15px;
 }
+
+.paginationBlock {
+    margin: auto;
+}
+
+.paginationLink {
+    margin-right: 15px;
+}
+
+.paginationLinkActive{
+    font-weight: bold;
+    font-size: larger;
+}
