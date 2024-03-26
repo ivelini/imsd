@@ -17,9 +17,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install dependencies
-      run: npm i && npm run build
-
     - name: SSH remote delete dir
       uses: appleboy/ssh-action@master
       with:
@@ -51,11 +48,10 @@ jobs:
         script: |
           cd ${{ env.WORKDIR }}
           cp /var/www/ilya/data/www/build/.env.backend ./.env
-          cp /var/www/ilya/data/www/build/composer.phar ./composer.phar
-          /opt/php82/bin/php ./composer.phar install
+          /opt/php82/bin/php composer install
           /opt/php82/bin/php artisan storage:link
           /opt/php82/bin/php artisan migrate --force
-          /opt/php82/bin/php ./composer.phar dump-autoload
+          /opt/php82/bin/php composer dump-autoload
           /opt/php82/bin/php artisan optimize
           npm i
           npm run build
