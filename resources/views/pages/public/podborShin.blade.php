@@ -1,4 +1,4 @@
-<x-layout>
+<x-public.layout>
     <x-slot:head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.4/nouislider.min.css" />
         @viteReactRefresh
@@ -7,5 +7,5 @@
     <x-slot:scripts>
         @vite(['resources/js/apps/podborShin.jsx'])
     </x-slot:scripts>
-</x-layout>
+</x-public.layout>
 

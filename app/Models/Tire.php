@@ -21,6 +21,7 @@ use Illuminate\Support\HigherOrderWhenProxy;
  * @property int $season_id
  * @property int $country_id
  * @property string $product_article
+ * @property string $slug
  * @property string $name
  * @property int $width
  * @property int $height
@@ -47,6 +48,7 @@ class Tire extends Model implements FilterAndSortInterface
         'season_id',
         'country_id',
         'product_article',
+        'slug',
         'name',
         'width',
         'height',

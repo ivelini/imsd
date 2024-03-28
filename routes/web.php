@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Web\Public\TireController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +18,13 @@ Route::get('/', function () {
     return view('welcome');
 })->middleware('auth.basic');
 
-Route::get('/podbor_shin', function () {
-    return view('pages.podbor_shin');
+Route::get('/podbor_shin', fn() => redirect('/podbor-shin'));
+Route::get('/podbor-shin', function () {
+    return view('pages.public.podborShin');
 })->middleware('auth.basic');
+
+Route::group(['prefix' => 'catalog', 'middleware' => ['auth.basic']], function () {
+    Route::group(['prefix' => 'tires'], function () {
+        Route::get('/{vendor:slug}/{tire:slug}', [TireController::class, 'show']);
+    });
+});

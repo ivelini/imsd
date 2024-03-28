@@ -24,6 +24,7 @@ class TireIndexResource extends JsonResource
     {
         return [
             'id'  => $this->id,
+            'slug' => $this->slug,
             'product_article'  => $this->product_article,
             'vendor_id'  => $this->vendor_id,
             'vendor'  => VendorResource::make($this->whenLoaded('vendor')),
@@ -39,7 +40,8 @@ class TireIndexResource extends JsonResource
             'is_spike'  => $this->is_spike,
             'parameters'  => $this->parameters,
             'count' => $this->total_count,
-            'price' => $this->minimum_price_from_stocks
+            'price' => $this->minimum_price_from_stocks,
+            'url' => asset('catalog/tires/' . $this->vendor->slug . '/' . $this->slug),
         ];
     }
 }

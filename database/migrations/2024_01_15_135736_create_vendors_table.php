@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('vendors', function (Blueprint $table) {
             $table->id();
             $table->comment('Производители');
+            $table->string('slug')->unique();
             $table->string('name')->unique();
             $table->timestamps();
         });

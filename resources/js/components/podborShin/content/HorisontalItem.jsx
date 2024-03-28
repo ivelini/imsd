@@ -35,7 +35,7 @@ export default function HorisontalItem({item}) {
 
                 <div className="catalog-product-details">
                     <div className="catalog-product-info">
-                        <h2 className="catalog-product-title">{item.name}</h2>
+                        <h2 className="catalog-product-title"><a href={item.url}>{item.name}</a></h2>
                         <div className="catalog-product-prices">
                             <p className="catalog-product-new-price">{item.price} ₽</p>
                             {/*<p className="catalog-product-old-price">32 200 ₽</p>*/}

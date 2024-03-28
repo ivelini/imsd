@@ -20,6 +20,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Rap2hpoutre\FastExcel\FastExcel;
 
 class ImportTiresJob implements ShouldQueue
@@ -99,11 +100,11 @@ class ImportTiresJob implements ShouldQueue
      */
     private function insert(array $row): void
     {
-        if ($row['width'] == '(пусто)') {
+        if ($row['width'] == '(пусто)' || empty($row['height'])) {
             return;
         }
 
-        $vendor = Vendor::firstOrCreate(['name' => $row['vendor']]);
+        $vendor = Vendor::firstOrCreate(['name' => $row['vendor'], 'slug' => Str::slug($row['vendor'])]);
         $season = Season::firstOrCreate(['name' => $row['season']]);
         $country = Country::firstOrCreate(['name' => $row['country']]);
 
@@ -122,9 +123,10 @@ class ImportTiresJob implements ShouldQueue
                 'vendor_id' => $row['vendor_id'],
                 'season_id' => $row['season_id'],
                 'country_id' => $row['country_id'],
+                'slug' => Str::slug($row['name'] . '-' . $row['width'] . '-' . $row['height'] . '-' . $row['diameter']),
                 'name' => $row['name'],
                 'width' => $row['width'],
-                'height' => !empty($row['height']) ? $row['height'] : null,
+                'height' => $row['height'],
                 'diameter' => $row['diameter'],
                 'is_runflat' => $row['is_runflat'],
                 'is_spike' => $row['is_spike'],

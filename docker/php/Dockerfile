@@ -1,9 +1,5 @@
 FROM php:8.2-fpm
 
-# Arguments defined in docker-compose.yml
-ARG user
-ARG uid
-
 # Install main dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -27,14 +23,6 @@ RUN apt-get update && apt-get install -y \
     wget \
     gnupg \
     htop
-
-# Install PECL and PEAR extensions
-RUN pecl install \
-    redis
-
-# Enable PECL and PEAR extensions
-RUN docker-php-ext-enable \
-    redis
 
 # Configure php extensions
 RUN docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp
@@ -66,13 +54,17 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ 
 # Cleanup dev dependencies
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && docker-php-source delete
 
-# Create system user to run Composer and Artisan Commands
-RUN usermod -u $uid www-data && groupmod -g $uid www-data
-
 # Set working directory
 WORKDIR /var/www
 
-USER $user
+ARG USER_ID
+ARG GROUP_ID
+
+USER root
+
+RUN usermod -u ${USER_ID} www-data && groupmod -g ${GROUP_ID} www-data
+
+USER www-data
 
 EXPOSE 9000
 

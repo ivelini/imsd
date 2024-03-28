@@ -498,11 +498,11 @@
             </div>
         </div>
 
-        <x-layout.header/>
+        <x-public.layout.header/>
 
         {{ $slot }}
 
-        <x-layout.footer/>
+        <x-public.layout.footer/>
     </div>
 </div>
 

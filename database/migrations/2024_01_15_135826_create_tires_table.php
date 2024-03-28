@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('country_id')->nullable()->constrained('countries')->cascadeOnDelete();
             $table->foreignId('season_id')->constrained('seasons')->cascadeOnDelete();
 
+            $table->string('slug');
             $table->string('product_article')->unique();
             $table->string('name');
             $table->integer('width');
